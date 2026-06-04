@@ -152,7 +152,7 @@ export default function RadarScan() {
   return (
     <section
       id="radar"
-      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 bg-[#020405]"
+      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 bg-[#020405] z-20"
     >
       {/* Ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-green-500/5 blur-[140px] pointer-events-none" />

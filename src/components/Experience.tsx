@@ -39,7 +39,7 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 bg-black"
+      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 z-10"
     >
       <div className="max-w-7xl mx-auto z-10 relative">
         {/* Section Heading */}

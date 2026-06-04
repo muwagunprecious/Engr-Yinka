@@ -28,7 +28,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 bg-black"
+      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 z-10"
     >
       <div className="max-w-6xl mx-auto z-10 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">

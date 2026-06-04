@@ -71,7 +71,7 @@ export default function Leadership() {
   return (
     <section
       id="leadership"
-      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 bg-[#050505]"
+      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 z-10"
     >
       <div className="max-w-6xl mx-auto z-10 relative">
         {/* Three-Column Layout Header with Image */}

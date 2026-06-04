@@ -36,7 +36,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20 px-6 md:px-12 lg:px-24"
+      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20 px-6 md:px-12 lg:px-24 z-10"
     >
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] mix-blend-screen" />
