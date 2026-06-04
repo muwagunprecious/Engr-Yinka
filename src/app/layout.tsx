@@ -30,7 +30,6 @@ export const metadata: Metadata = {
 };
 
 import CircuitBackground from "../components/CircuitBackground";
-import SparkCursor from "../components/SparkCursor";
 
 export default function RootLayout({
   children,
@@ -44,7 +43,6 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-black text-white relative">
         <CircuitBackground />
-        <SparkCursor />
         <div className="noise-bg" />
         {children}
       </body>
