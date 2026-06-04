@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   },
 };
 
+import CircuitBackground from "../components/CircuitBackground";
+import SparkCursor from "../components/SparkCursor";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,6 +43,8 @@ export default function RootLayout({
       className={`${plusJakartaSans.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col bg-black text-white relative">
+        <CircuitBackground />
+        <SparkCursor />
         <div className="noise-bg" />
         {children}
       </body>
