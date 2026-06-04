@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import RadarScan from "@/components/RadarScan";
+import ArduinoSection from "@/components/ArduinoSection";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Leadership from "@/components/Leadership";
@@ -12,6 +13,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <RadarScan />
+      <ArduinoSection />
       <Experience />
       <Projects />
       <Leadership />
