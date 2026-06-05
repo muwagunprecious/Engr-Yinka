@@ -106,6 +106,15 @@ export default function ArduinoSection() {
     };
   }, [startCycle]);
 
+  const [bulbOn, setBulbOn] = useState(false);
+
+  useEffect(() => {
+    const bulbInterval = setInterval(() => {
+      setBulbOn((prev) => !prev);
+    }, 1500);
+    return () => clearInterval(bulbInterval);
+  }, []);
+
   const activeProject = activeIdx !== null ? PIN_PROJECTS[activeIdx] : null;
 
   return (
@@ -164,6 +173,10 @@ export default function ArduinoSection() {
                   <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                 </filter>
               ))}
+              <filter id="glow-bulb">
+                <feGaussianBlur stdDeviation="8" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
             </defs>
 
             {/* Board */}
@@ -276,6 +289,55 @@ export default function ArduinoSection() {
                 )}
               </g>
             ))}
+
+            {/* Smart Bulb Wire & Bulb */}
+            <path d="M 688 82 L 688 25 L 810 25 L 810 179" fill="none" stroke="#eab308" strokeWidth="2.5" strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M 688 82 L 688 25 L 810 25 L 810 179" fill="none" stroke="#fbbf24" strokeWidth="3"
+              strokeLinecap="round" strokeLinejoin="round"
+              filter="url(#glow-bulb)"
+              style={{ strokeDasharray: "30 200", animation: "circuitFlow 1.5s linear infinite" }}
+            />
+
+            <g transform="translate(785, 120)">
+              {/* Connection point dot */}
+              <circle cx="25" cy="59" r="3" fill="#fbbf24" style={{ filter: bulbOn ? "drop-shadow(0 0 5px #fbbf24)" : "none" }} />
+              
+              {/* Screw base */}
+              <rect x="15" y="42" width="20" height="6" fill="#4b5563" rx="1.5" />
+              <rect x="17" y="48" width="16" height="6" fill="#374151" rx="1" />
+              <rect x="19" y="54" width="12" height="5" fill="#1f2937" rx="0.8" />
+
+              {/* Bulb body/collar */}
+              <path d="M 12 25 L 38 25 L 35 42 L 15 42 Z" fill="#e4e4e7" stroke="#a1a1aa" strokeWidth="0.5" />
+              <rect x="15" y="28" width="20" height="3" fill="#cbd5e1" />
+
+              {/* Filament inside (visible when ON) */}
+              {bulbOn && (
+                <path d="M 20 22 L 23 15 L 27 15 L 30 22" fill="none" stroke="#fef08a" strokeWidth="1.5" strokeLinecap="round" style={{ filter: "drop-shadow(0 0 4px #fbbf24)" }} />
+              )}
+
+              {/* Glass dome */}
+              <circle 
+                cx="25" 
+                cy="14" 
+                r="20" 
+                fill={bulbOn ? "rgba(253, 224, 71, 0.25)" : "rgba(39, 39, 42, 0.8)"} 
+                stroke={bulbOn ? "#eab308" : "#4b5563"} 
+                strokeWidth="2.5" 
+                style={{ 
+                  filter: bulbOn ? "url(#glow-bulb)" : "none",
+                  transition: "all 0.3s ease-in-out" 
+                }} 
+              />
+
+              {/* Smart Bulb Wi-Fi Wave Icon */}
+              <g opacity={bulbOn ? 0.9 : 0.4} style={{ transition: "opacity 0.3s ease" }}>
+                <path d="M 21 11 A 5 5 0 0 1 29 11" fill="none" stroke={bulbOn ? "#fef08a" : "#9ca3af"} strokeWidth="1.2" strokeLinecap="round" />
+                <path d="M 17 7 A 10 10 0 0 1 33 7" fill="none" stroke={bulbOn ? "#fef08a" : "#9ca3af"} strokeWidth="1.2" strokeLinecap="round" />
+                <circle cx="25" cy="15" r="1.5" fill={bulbOn ? "#fef08a" : "#9ca3af"} />
+              </g>
+            </g>
           </svg>
 
           {/* ── Popup — centred over the Arduino, emerges from the middle ── */}
