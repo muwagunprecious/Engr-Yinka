@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { X, Cpu, Radio, Brain, Settings } from "lucide-react";
 import React from "react";
@@ -72,19 +72,23 @@ const ANALOG_PINS  = Array.from({ length: 6  }, (_, i) => ({ x: 408 + i * 28, y:
 
 /* ─── Component ──────────────────────────────────────────────────────── */
 export default function ArduinoSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: false, amount: 0.15 });
+
   const [activeIdx, setActiveIdx]     = useState<number | null>(null);
   const [firedWires, setFiredWires]   = useState<Set<number>>(new Set());
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   /* Fire LED dots when wires first reach their pins */
   useEffect(() => {
+    if (!isInView) return;
     const timers = WIRES.map((wire) =>
       setTimeout(() => {
         setFiredWires((prev) => new Set([...prev, wire.id]));
       }, (wire.delay + wire.duration) * 1000)
     );
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [isInView]);
 
   /* Continuously cycle through projects */
   const startCycle = useCallback(() => {
@@ -99,31 +103,37 @@ export default function ArduinoSection() {
 
   /* Start cycling after wires have had time to reach the board */
   useEffect(() => {
+    if (!isInView) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      return;
+    }
     const t = setTimeout(startCycle, 3800);
     return () => {
       clearTimeout(t);
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [startCycle]);
+  }, [isInView, startCycle]);
 
   const [bulbOn, setBulbOn] = useState(false);
   const [doorOpen, setDoorOpen] = useState(false);
   const [buzzerActive, setBuzzerActive] = useState(false);
 
   useEffect(() => {
+    if (!isInView) return;
     const interval = setInterval(() => {
       setBulbOn((prev) => !prev);
       setDoorOpen((prev) => !prev);
       setBuzzerActive((prev) => !prev);
     }, 1500);
     return () => clearInterval(interval);
-  }, []);
+  }, [isInView]);
 
   const activeProject = activeIdx !== null ? PIN_PROJECTS[activeIdx] : null;
 
   return (
     <section
       id="arduino"
+      ref={sectionRef}
       className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 z-10"
     >
       <div className="max-w-7xl mx-auto relative z-10">
@@ -297,10 +307,14 @@ export default function ArduinoSection() {
               <g key={wire.id}>
                 <path d={wire.d} fill="none" stroke={wire.color} strokeWidth="2.5" strokeOpacity="0.12" strokeLinecap="round" strokeLinejoin="round" />
                 <path
-                  d={wire.d} fill="none" stroke={wire.color} strokeWidth="3"
-                  strokeLinecap="round" strokeLinejoin="round"
-                  filter={`url(#glow-${wire.id})`}
-                  style={{ strokeDasharray: "40 300", animation: `circuitFlow ${wire.duration}s linear infinite`, animationDelay: `${wire.delay}s` }}
+                  d={wire.d} fill="none" stroke={wire.color} strokeWidth="6.5"
+                  strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round"
+                  style={{ strokeDasharray: "40 300", animation: `circuitFlow ${wire.duration}s linear infinite`, animationDelay: `${wire.delay}s`, willChange: "stroke-dashoffset" }}
+                />
+                <path
+                  d={wire.d} fill="none" stroke={wire.color} strokeWidth="2"
+                  strokeOpacity="0.9" strokeLinecap="round" strokeLinejoin="round"
+                  style={{ strokeDasharray: "40 300", animation: `circuitFlow ${wire.duration}s linear infinite`, animationDelay: `${wire.delay}s`, willChange: "stroke-dashoffset" }}
                 />
                 {firedWires.has(wire.id) && (
                   <circle cx={wire.pinHitX} cy={wire.pinHitY} r="6" fill={wire.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 8px ${wire.color})` }}>
@@ -314,10 +328,14 @@ export default function ArduinoSection() {
             {/* Smart Bulb Wire & Bulb */}
             <path d="M 688 82 L 688 25 L 810 25 L 810 179" fill="none" stroke="#eab308" strokeWidth="2.5" strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round" />
             <path
-              d="M 688 82 L 688 25 L 810 25 L 810 179" fill="none" stroke="#fbbf24" strokeWidth="3"
-              strokeLinecap="round" strokeLinejoin="round"
-              filter="url(#glow-bulb)"
-              style={{ strokeDasharray: "30 200", animation: "circuitFlow 1.5s linear infinite" }}
+              d="M 688 82 L 688 25 L 810 25 L 810 179" fill="none" stroke="#fbbf24" strokeWidth="6.5"
+              strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round"
+              style={{ strokeDasharray: "30 200", animation: "circuitFlow 1.5s linear infinite", willChange: "stroke-dashoffset" }}
+            />
+            <path
+              d="M 688 82 L 688 25 L 810 25 L 810 179" fill="none" stroke="#fbbf24" strokeWidth="2"
+              strokeOpacity="0.9" strokeLinecap="round" strokeLinejoin="round"
+              style={{ strokeDasharray: "30 200", animation: "circuitFlow 1.5s linear infinite", willChange: "stroke-dashoffset" }}
             />
 
             <g transform="translate(785, 120)">
@@ -380,10 +398,14 @@ export default function ArduinoSection() {
             {/* Smart Door & Connections (Left End) */}
             <path d="M 436 308 L 436 340 L 120 340 L 120 280" fill="none" stroke="#10b981" strokeWidth="2.5" strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round" />
             <path
-              d="M 436 308 L 436 340 L 120 340 L 120 280" fill="none" stroke="#34d399" strokeWidth="3"
-              strokeLinecap="round" strokeLinejoin="round"
-              filter="url(#glow-bulb)"
-              style={{ strokeDasharray: "30 200", animation: "circuitFlow 1.6s linear infinite" }}
+              d="M 436 308 L 436 340 L 120 340 L 120 280" fill="none" stroke="#34d399" strokeWidth="6.5"
+              strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round"
+              style={{ strokeDasharray: "30 200", animation: "circuitFlow 1.6s linear infinite", willChange: "stroke-dashoffset" }}
+            />
+            <path
+              d="M 436 308 L 436 340 L 120 340 L 120 280" fill="none" stroke="#34d399" strokeWidth="2"
+              strokeOpacity="0.9" strokeLinecap="round" strokeLinejoin="round"
+              style={{ strokeDasharray: "30 200", animation: "circuitFlow 1.6s linear infinite", willChange: "stroke-dashoffset" }}
             />
 
             <g transform="translate(85, 170)">
@@ -408,10 +430,14 @@ export default function ArduinoSection() {
             {/* Buzzer & Connections (Bottom End) */}
             <path d="M 520 308 L 520 440 L 475 440 L 475 470" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round" />
             <path
-              d="M 520 308 L 520 440 L 475 440 L 475 470" fill="none" stroke="#f87171" strokeWidth="3"
-              strokeLinecap="round" strokeLinejoin="round"
-              filter="url(#glow-bulb)"
-              style={{ strokeDasharray: "25 150", animation: "circuitFlow 1.2s linear infinite" }}
+              d="M 520 308 L 520 440 L 475 440 L 475 470" fill="none" stroke="#f87171" strokeWidth="6.5"
+              strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round"
+              style={{ strokeDasharray: "25 150", animation: "circuitFlow 1.2s linear infinite", willChange: "stroke-dashoffset" }}
+            />
+            <path
+              d="M 520 308 L 520 440 L 475 440 L 475 470" fill="none" stroke="#f87171" strokeWidth="2"
+              strokeOpacity="0.9" strokeLinecap="round" strokeLinejoin="round"
+              style={{ strokeDasharray: "25 150", animation: "circuitFlow 1.2s linear infinite", willChange: "stroke-dashoffset" }}
             />
 
             <g transform="translate(450, 465)">

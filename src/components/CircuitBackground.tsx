@@ -125,19 +125,38 @@ export default function CircuitBackground() {
                   strokeLinejoin="round"
                 />
 
-                {/* Animated current pulse */}
+                {/* Animated current pulse (Thick glowing background stroke) */}
                 <path
                   d={pathData}
                   fill="none"
                   stroke="#ffffff"
-                  strokeWidth="1.6"
+                  strokeWidth="3.5"
+                  strokeOpacity="0.15"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  filter="url(#glow)"
                   style={{
                     strokeDasharray: '30 200',
                     animation: `circuitFlow ${bus.duration} linear infinite`,
                     animationDelay: bus.delay,
+                    willChange: 'stroke-dashoffset',
+                  }}
+                  className="current-path"
+                />
+
+                {/* Animated current pulse (Sharp core stroke) */}
+                <path
+                  d={pathData}
+                  fill="none"
+                  stroke="#ffffff"
+                  strokeWidth="1.2"
+                  strokeOpacity="0.95"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{
+                    strokeDasharray: '30 200',
+                    animation: `circuitFlow ${bus.duration} linear infinite`,
+                    animationDelay: bus.delay,
+                    willChange: 'stroke-dashoffset',
                   }}
                   className="current-path"
                 />
