@@ -107,12 +107,16 @@ export default function ArduinoSection() {
   }, [startCycle]);
 
   const [bulbOn, setBulbOn] = useState(false);
+  const [doorOpen, setDoorOpen] = useState(false);
+  const [buzzerActive, setBuzzerActive] = useState(false);
 
   useEffect(() => {
-    const bulbInterval = setInterval(() => {
+    const interval = setInterval(() => {
       setBulbOn((prev) => !prev);
+      setDoorOpen((prev) => !prev);
+      setBuzzerActive((prev) => !prev);
     }, 1500);
-    return () => clearInterval(bulbInterval);
+    return () => clearInterval(interval);
   }, []);
 
   const activeProject = activeIdx !== null ? PIN_PROJECTS[activeIdx] : null;
@@ -149,6 +153,23 @@ export default function ArduinoSection() {
           </motion.p>
         </div>
 
+        {/* Red Alert Banner */}
+        <div className="mb-8 w-full max-w-4xl mx-auto bg-red-950/20 border border-red-500/30 rounded-lg p-3 flex items-center justify-between gap-4 overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-transparent to-red-500/10 animate-pulse pointer-events-none" />
+          <div className="flex items-center gap-3 relative z-10">
+            <span className={`w-3.5 h-3.5 rounded-full bg-red-500 ${buzzerActive ? 'animate-ping' : ''} shadow-[0_0_12px_#ef4444]`} />
+            <span className="font-mono text-xs font-bold tracking-widest text-red-400 uppercase">
+              System Status: Alert
+            </span>
+          </div>
+          <div className="flex-1 text-center font-mono text-xs md:text-sm font-bold text-red-500 tracking-wider animate-pulse relative z-10">
+            ⚠ WARNING: AN ENGR IN THE BUILDING ⚠
+          </div>
+          <div className="text-[10px] font-mono text-red-400/60 relative z-10 hidden sm:block">
+            LOC-SEC-01 // CODES RED
+          </div>
+        </div>
+
         {/* ── Arduino + Popup stage ───────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
@@ -156,7 +177,7 @@ export default function ArduinoSection() {
           className="relative w-full"
         >
           {/* SVG Arduino Board */}
-          <svg viewBox="0 0 900 500" className="w-full max-w-4xl mx-auto block" aria-label="Interactive Arduino board">
+          <svg viewBox="0 0 960 560" className="w-full max-w-5xl mx-auto block" aria-label="Interactive Arduino board">
             <defs>
               <linearGradient id="boardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%"   stopColor="#1a3a5c" />
@@ -337,6 +358,78 @@ export default function ArduinoSection() {
                 <path d="M 17 7 A 10 10 0 0 1 33 7" fill="none" stroke={bulbOn ? "#fef08a" : "#9ca3af"} strokeWidth="1.2" strokeLinecap="round" />
                 <circle cx="25" cy="15" r="1.5" fill={bulbOn ? "#fef08a" : "#9ca3af"} />
               </g>
+            </g>
+
+            {/* LCD Screen & Connections (Top End) */}
+            <g>
+              {/* Ribbon cable wires */}
+              <line x1="440" y1="82" x2="440" y2="50" stroke="#a855f7" strokeWidth="1.5" strokeOpacity="0.8" />
+              <line x1="450" y1="82" x2="450" y2="50" stroke="#3b82f6" strokeWidth="1.5" strokeOpacity="0.8" />
+              <line x1="460" y1="82" x2="460" y2="50" stroke="#10b981" strokeWidth="1.5" strokeOpacity="0.8" />
+              <line x1="470" y1="82" x2="470" y2="50" stroke="#f59e0b" strokeWidth="1.5" strokeOpacity="0.8" />
+              <line x1="480" y1="82" x2="480" y2="50" stroke="#ef4444" strokeWidth="1.5" strokeOpacity="0.8" />
+
+              {/* LCD Module Case */}
+              <rect x="380" y="8" width="160" height="42" rx="4" fill="#0f172a" stroke="#334155" strokeWidth="2" />
+              {/* Screen Bezel */}
+              <rect x="386" y="12" width="148" height="34" rx="2" fill="#022c22" stroke="#047857" strokeWidth="1.5" />
+              {/* Text display */}
+              <text x="460" y="33" textAnchor="middle" fill="#10b981" fontSize="13" fontFamily="monospace" fontWeight="bold" style={{ filter: "drop-shadow(0 0 3px #10b981)", letterSpacing: "1px" }}>ENGR YINKA</text>
+            </g>
+
+            {/* Smart Door & Connections (Left End) */}
+            <path d="M 436 308 L 436 340 L 120 340 L 120 280" fill="none" stroke="#10b981" strokeWidth="2.5" strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M 436 308 L 436 340 L 120 340 L 120 280" fill="none" stroke="#34d399" strokeWidth="3"
+              strokeLinecap="round" strokeLinejoin="round"
+              filter="url(#glow-bulb)"
+              style={{ strokeDasharray: "30 200", animation: "circuitFlow 1.6s linear infinite" }}
+            />
+
+            <g transform="translate(85, 170)">
+              {/* Outer frame */}
+              <rect x="0" y="0" width="70" height="110" fill="#0f172a" stroke="#334155" strokeWidth="2" rx="4" />
+              {/* Sliding Door Backdrop / Inside Room */}
+              <rect x="4" y="4" width="62" height="102" fill="#1e1b4b" rx="2" />
+              
+              {/* Glow when open */}
+              <rect x="4" y="4" width="62" height="102" fill="#312e81" opacity={doorOpen ? 0.8 : 0} style={{ transition: "opacity 0.5s ease-in-out" }} />
+              
+              {/* Text inside the room */}
+              <text x="35" y="52" textAnchor="middle" fill="#34d399" fontSize="8" fontFamily="monospace" fontWeight="bold" opacity={doorOpen ? 0.9 : 0} style={{ transition: "opacity 0.4s", filter: "drop-shadow(0 0 2px #10b981)" }}>ACCESS</text>
+              <text x="35" y="64" textAnchor="middle" fill="#34d399" fontSize="8" fontFamily="monospace" fontWeight="bold" opacity={doorOpen ? 0.9 : 0} style={{ transition: "opacity 0.4s", filter: "drop-shadow(0 0 2px #10b981)" }}>GRANTED</text>
+
+              {/* Left sliding door panel */}
+              <rect x="4" y="4" width={doorOpen ? 6 : 31} height="102" fill="#1e293b" stroke="#3b82f6" strokeWidth="1" rx="1" style={{ transition: "width 0.5s ease-in-out" }} />
+              {/* Right sliding door panel */}
+              <rect x={doorOpen ? 60 : 35} y="4" width={doorOpen ? 6 : 31} height="102" fill="#1e293b" stroke="#3b82f6" strokeWidth="1" rx="1" style={{ transition: "x 0.5s ease-in-out, width 0.5s ease-in-out" }} />
+            </g>
+
+            {/* Buzzer & Connections (Bottom End) */}
+            <path d="M 520 308 L 520 440 L 475 440 L 475 470" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeOpacity="0.15" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M 520 308 L 520 440 L 475 440 L 475 470" fill="none" stroke="#f87171" strokeWidth="3"
+              strokeLinecap="round" strokeLinejoin="round"
+              filter="url(#glow-bulb)"
+              style={{ strokeDasharray: "25 150", animation: "circuitFlow 1.2s linear infinite" }}
+            />
+
+            <g transform="translate(450, 465)">
+              {/* Buzzer Casing */}
+              <circle cx="25" cy="25" r="22" fill="#1e293b" stroke="#475569" strokeWidth="2" />
+              {/* Sound Hole */}
+              <circle cx="25" cy="25" r="7" fill="#0f172a" />
+              
+              {/* Blinking Red LED */}
+              <circle cx="25" cy="12" r="4" fill={buzzerActive ? "#ef4444" : "#450a0a"} style={{ filter: buzzerActive ? "drop-shadow(0 0 8px #ef4444)" : "none", transition: "all 0.15s" }} />
+
+              {/* Sound/Light Wave Indicators */}
+              {buzzerActive && (
+                <g stroke="#ef4444" strokeWidth="1.5" fill="none" opacity="0.6">
+                  <path d="M -2 25 A 28 28 0 0 0 -2 40" />
+                  <path d="M 52 25 A 28 28 0 0 1 52 40" />
+                </g>
+              )}
             </g>
           </svg>
 
