@@ -35,6 +35,7 @@ const projects: Project[] = [
     category: "IoT • Wireless",
     description:
       "Connected environmental sensing nodes deploying low-power mesh networks for real-time monitoring.",
+    image: "/yinka_workspace.png",
     icon: <Radio className="w-5 h-5" />,
     stats: [
       { label: "Uptime", value: "99.99%" },
@@ -46,6 +47,7 @@ const projects: Project[] = [
     category: "Embedded Systems",
     description:
       "Custom firmware development and PCB design for smart hardware monitoring and telemetry systems.",
+    image: "/engr_yinka_2.jpeg",
     icon: <Cpu className="w-5 h-5" />,
     stats: [
       { label: "Power Draw", value: "1.2mW" },
@@ -57,6 +59,7 @@ const projects: Project[] = [
     category: "Automation",
     description:
       "PLC programming and SCADA configuration for automated process flows in modern manufacturing.",
+    image: "/mg_0434.jpeg",
     icon: <Settings className="w-5 h-5" />,
     stats: [
       { label: "Throughput", value: "+30%" },
@@ -68,6 +71,7 @@ const projects: Project[] = [
     category: "AI • Deep Learning",
     description:
       "Deploying lightweight object detection models on low-power microcontrollers at the edge.",
+    image: "/mg_0440.jpeg",
     icon: <Brain className="w-5 h-5" />,
     stats: [
       { label: "Model", value: "140KB" },
@@ -263,64 +267,68 @@ export default function Projects() {
                     filter: isRevealed ? "blur(0px)" : "blur(4px)",
                   }}
                   transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
-                  className="group relative rounded-xl border overflow-hidden flex items-center gap-4 p-4 md:p-5 transition-colors duration-500"
+                  className="group relative rounded-2xl border overflow-hidden flex flex-col md:flex-row items-center gap-6 p-5 md:p-6 transition-colors duration-500 min-h-[140px] md:min-h-[160px]"
                   style={{
-                    borderColor: isRevealed ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.04)",
-                    background: isRevealed ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.01)",
+                    borderColor: isRevealed ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.04)",
+                    background: isRevealed ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.01)",
+                    boxShadow: isRevealed ? "0 10px 40px -10px rgba(0,0,0,0.5)" : "none",
                   }}
                 >
-                  {/* Background image for featured */}
+                  {/* Background hover shimmer */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/[0.03] to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+                  {/* Image container on the left */}
                   {project.image && (
-                    <>
-                      <div className="absolute inset-0 z-0 opacity-10">
-                        <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                    <div className="shrink-0 w-full md:w-48 h-32 md:h-full rounded-xl overflow-hidden border border-white/10 relative z-10">
+                      <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+                      <div className="absolute bottom-2 left-2 p-1.5 rounded-lg bg-black/40 text-white/80 backdrop-blur-md border border-white/10">
+                        {project.icon}
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-0" />
-                    </>
+                    </div>
                   )}
 
-                  {/* Icon */}
-                  <div className="shrink-0 w-10 h-10 rounded-lg border border-white/10 bg-black/60 flex items-center justify-center text-white/60 z-10">
-                    {project.icon}
-                  </div>
-
                   {/* Content */}
-                  <div className="flex-1 min-w-0 z-10">
-                    <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                      <h4 className="font-sans text-sm md:text-base font-bold text-white truncate">
+                  <div className="flex-1 min-w-0 z-10 flex flex-col justify-center w-full">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <h4 className="font-sans text-lg md:text-xl font-bold text-white truncate">
                         {project.title}
                       </h4>
-                      <span className="font-mono text-[9px] tracking-wider text-white/40 uppercase border border-white/10 rounded-full px-2 py-0.5 bg-black/40 shrink-0">
+                      <span className="font-mono text-[10px] tracking-wider text-blue-300/80 uppercase border border-blue-500/20 rounded-full px-2.5 py-0.5 bg-blue-500/10 shrink-0">
                         {project.category}
                       </span>
                       {project.badge && (
-                        <span className="font-mono text-[9px] text-amber-300/80 bg-amber-500/10 rounded-full px-2 py-0.5 shrink-0">
+                        <span className="font-mono text-[10px] text-amber-300/90 bg-amber-500/15 border border-amber-500/20 rounded-full px-2.5 py-0.5 shrink-0">
                           {project.badge}
                         </span>
                       )}
                     </div>
-                    <p className="font-sans text-xs text-white/45 line-clamp-1">
+                    <p className="font-sans text-sm md:text-base text-white/60 line-clamp-2 md:line-clamp-3 mb-4 group-hover:text-white/80 transition-colors">
                       {project.description}
                     </p>
-                  </div>
 
-                  {/* Stats */}
-                  <div className="hidden md:flex gap-4 shrink-0 z-10">
-                    {project.stats.map((stat, sIdx) => (
-                      <div key={sIdx} className="flex flex-col items-end">
-                        <span className="font-mono text-[8px] uppercase tracking-wider text-white/35">
-                          {stat.label}
-                        </span>
-                        <span className="font-mono text-xs font-bold text-white">
-                          {stat.value}
-                        </span>
-                      </div>
-                    ))}
+                    {/* Stats */}
+                    <div className="flex gap-6 shrink-0 mt-auto">
+                      {project.stats.map((stat, sIdx) => (
+                        <div key={sIdx} className="flex flex-col">
+                          <span className="font-mono text-[10px] uppercase tracking-wider text-white/40 mb-0.5">
+                            {stat.label}
+                          </span>
+                          <span className="font-mono text-sm md:text-base font-bold text-white/90">
+                            {stat.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Arrow */}
-                  <div className="shrink-0 w-7 h-7 rounded-full border border-white/10 bg-black/40 flex items-center justify-center text-white/50 z-10">
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  <div className="shrink-0 w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60 z-10 group-hover:bg-white/10 group-hover:text-white transition-all duration-300 self-start md:self-center absolute top-4 right-4 md:relative md:top-0 md:right-0">
+                    <ArrowUpRight className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
                   </div>
 
                   {/* Reveal flash */}
