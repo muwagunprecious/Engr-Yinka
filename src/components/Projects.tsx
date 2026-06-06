@@ -153,13 +153,14 @@ function BannerFlag() {
 export default function Projects() {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  /* ─── Track scroll over the entire section ─── */
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
+    offset: ["start end", "end start"],
   });
 
   /* ─── Plane vertical position ─── */
-  // Plane flies from bottom (100%) to top (-10%) as scroll progresses 0 → 1
+  // Plane flies from bottom (5%) to top (95%) of the STICKY viewport as the section scrolls
   const planeBottom = useTransform(scrollYProgress, [0, 1], ["5%", "95%"]);
   // Gentle horizontal wobble
   const planeWobbleX = useTransform(
@@ -168,112 +169,98 @@ export default function Projects() {
     [0, 6, -4, 8, -6, 5, -3, 0]
   );
 
-  /* ─── Track revealed cards ─── */
-  const [revealedCount, setRevealedCount] = useState(0);
-
-  // The plane uncovers each card as it flies past its position
-  // Cards are at approximately 18%, 36%, 54%, 72%, 90% from bottom
-  const revealThresholds = [0.10, 0.28, 0.46, 0.64, 0.82];
-
-  useMotionValueEvent(scrollYProgress, "change", (val) => {
-    let count = 0;
-    for (const threshold of revealThresholds) {
-      if (val >= threshold) count++;
-    }
-    setRevealedCount(count);
-  });
-
   return (
-    <div ref={containerRef} className="relative w-full h-[500vh] border-t border-white/5">
-      {/* Sticky viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-black z-10 flex">
-        {/* ─── Left Column: Heading + Plane flight path ─── */}
-        <div className="relative w-24 md:w-36 lg:w-48 shrink-0 h-full">
-          {/* Vertical flight path (dashed guide line) */}
-          <div className="absolute left-1/2 top-[10%] bottom-[10%] w-[1px] -translate-x-1/2">
-            <div className="w-full h-full border-l border-dashed border-white/10" />
-          </div>
-
-          {/* Exhaust trail below plane */}
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 w-[2px] bottom-[5%]"
-            style={{
-              height: planeBottom,
-              background: "linear-gradient(to top, transparent, rgba(59,130,246,0.15), rgba(249,115,22,0.1), transparent)",
-            }}
-          />
-
-          {/* Plane + Banner */}
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-30"
-            style={{ bottom: planeBottom, x: planeWobbleX }}
-          >
-            {/* Plane */}
-            <PlaneUp />
-
-            {/* Exhaust puffs */}
-            <div className="flex flex-col items-center gap-1 mt-1">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="w-1.5 h-1.5 rounded-full bg-orange-400/40"
-                  animate={{
-                    scale: [0.8, 1.5, 0],
-                    opacity: [0.6, 0.2, 0],
-                    y: [0, 12 + i * 6],
-                  }}
-                  transition={{
-                    duration: 0.7,
-                    repeat: Infinity,
-                    delay: i * 0.15,
-                    ease: "easeOut",
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Banner Flag dangling below */}
-            <div className="mt-2">
-              <BannerFlag />
-            </div>
-          </motion.div>
+    <div ref={containerRef} className="relative w-full bg-black border-t border-white/5 flex">
+      {/* ─── Left Column: Sticky Plane flight path ─── */}
+      <div className="sticky top-0 h-screen w-24 md:w-36 lg:w-48 shrink-0 overflow-hidden">
+        {/* Vertical flight path (dashed guide line) */}
+        <div className="absolute left-1/2 top-[5%] bottom-[5%] w-[1px] -translate-x-1/2 z-0">
+          <div className="w-full h-full border-l border-dashed border-white/10" />
         </div>
 
-        {/* ─── Right Column: Cards stacked vertically ─── */}
-        <div className="flex-1 h-full flex flex-col py-12 px-4 md:px-8 lg:px-16 overflow-hidden">
-          {/* Section Heading */}
-          <div className="mb-6 shrink-0">
-            <p className="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase mb-2">
-              Selected Works
-            </p>
-            <h2 className="font-sans text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-white max-w-xl">
-              Engineering intelligent products that solve real-world problems.
-            </h2>
+        {/* Exhaust trail below plane */}
+        <motion.div
+          className="absolute left-1/2 -translate-x-1/2 w-[2px] bottom-[5%] z-10"
+          style={{
+            height: planeBottom,
+            background: "linear-gradient(to top, transparent, rgba(59,130,246,0.15), rgba(249,115,22,0.1), transparent)",
+          }}
+        />
+
+        {/* Plane + Banner */}
+        <motion.div
+          className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-30"
+          style={{ bottom: planeBottom, x: planeWobbleX }}
+        >
+          {/* Plane */}
+          <PlaneUp />
+
+          {/* Exhaust puffs */}
+          <div className="flex flex-col items-center gap-1 mt-1">
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                className="w-1.5 h-1.5 rounded-full bg-orange-400/40"
+                animate={{
+                  scale: [0.8, 1.5, 0],
+                  opacity: [0.6, 0.2, 0],
+                  y: [0, 12 + i * 6],
+                }}
+                transition={{
+                  duration: 0.7,
+                  repeat: Infinity,
+                  delay: i * 0.15,
+                  ease: "easeOut",
+                }}
+              />
+            ))}
           </div>
 
-          {/* Cards */}
-          <div className="flex-1 flex flex-col gap-3 justify-center overflow-hidden">
-            {projects.map((project, index) => {
-              const isRevealed = revealedCount > index;
+          {/* Banner Flag dangling below */}
+          <div className="mt-2">
+            <BannerFlag />
+          </div>
+        </motion.div>
+      </div>
 
-              return (
-                <motion.div
-                  key={index}
-                  initial={false}
-                  animate={{
-                    opacity: isRevealed ? 1 : 0.08,
-                    scale: isRevealed ? 1 : 0.98,
-                    x: isRevealed ? 0 : 20,
-                    filter: isRevealed ? "blur(0px)" : "blur(4px)",
-                  }}
-                  transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
-                  className="group relative rounded-2xl border overflow-hidden flex flex-col md:flex-row items-center gap-6 p-5 md:p-6 transition-colors duration-500 min-h-[140px] md:min-h-[160px]"
-                  style={{
-                    borderColor: isRevealed ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.04)",
-                    background: isRevealed ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.01)",
-                    boxShadow: isRevealed ? "0 10px 40px -10px rgba(0,0,0,0.5)" : "none",
-                  }}
-                >
+      {/* ─── Right Column: Naturally scrolling cards ─── */}
+      <div className="flex-1 py-24 md:py-32 px-4 md:px-8 lg:px-16 overflow-hidden">
+        {/* Section Heading */}
+        <div className="mb-16 md:mb-24">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase mb-3"
+          >
+            Selected Works
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ delay: 0.1 }}
+            className="font-sans text-3xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-white max-w-2xl"
+          >
+            Engineering intelligent products that solve real-world problems.
+          </motion.h2>
+        </div>
+
+        {/* Cards container */}
+        <div className="flex flex-col gap-6 md:gap-10 max-w-4xl">
+          {projects.map((project, index) => (
+            <motion.div
+              key={index}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
+              variants={{
+                hidden: { opacity: 0.3, scale: 0.95, y: 30, filter: "blur(4px)" },
+                visible: { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }
+              }}
+              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+              className="group relative rounded-2xl border border-white/10 overflow-hidden flex flex-col md:flex-row items-center gap-6 p-5 md:p-6 transition-all duration-500 min-h-[140px] md:min-h-[200px] bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/20 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+            >
                   {/* Background hover shimmer */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/[0.03] to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
@@ -331,39 +318,8 @@ export default function Projects() {
                     <ArrowUpRight className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
                   </div>
 
-                  {/* Reveal flash */}
-                  <AnimatePresence>
-                    {isRevealed && (
-                      <motion.div
-                        key={`flash-${index}`}
-                        initial={{ opacity: 0.4, x: "-100%" }}
-                        animate={{ opacity: 0, x: "100%" }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400/10 to-transparent pointer-events-none z-20"
-                      />
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Progress dots at bottom */}
-          <div className="flex items-center justify-center gap-2 mt-4 shrink-0">
-            {projects.map((_, i) => (
-              <div
-                key={i}
-                className="h-1 rounded-full transition-all duration-300"
-                style={{
-                  width: revealedCount > i ? "18px" : "6px",
-                  backgroundColor: revealedCount > i ? "#3b82f6" : "rgba(255,255,255,0.12)",
-                }}
-              />
-            ))}
-            <span className="ml-3 font-mono text-[10px] text-white/30">
-              {revealedCount}/{projects.length}
-            </span>
-          </div>
+              </motion.div>
+          ))}
         </div>
       </div>
     </div>
