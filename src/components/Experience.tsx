@@ -77,17 +77,23 @@ export default function Experience() {
     }
   });
 
-  // Green Wire: Animates from loose coordinate (90, 130) to plug point (142, 86)
-  const greenWireX = useTransform(scrollYProgress, [0.05, 0.28], [90, 142]);
-  const greenWireY = useTransform(scrollYProgress, [0.05, 0.28], [130, 86]);
+  // Pin destinations
+  // Green pin: (132, 76) — APWEN
+  // Blue pin:  (248, 166) — Nestlé
+  // Purple pin:(132, 256) — NION
 
-  // Blue Wire: Animates from loose coordinate (290, 220) to plug point (258, 176)
-  const blueWireX = useTransform(scrollYProgress, [0.35, 0.60], [290, 258]);
-  const blueWireY = useTransform(scrollYProgress, [0.35, 0.60], [220, 176]);
+  // Each wire tip starts 22px ABOVE the pin and drops DOWN into it as scroll progresses.
+  // The wire body is a fixed straight line from a top anchor to just above the pin.
+  // Only the final Y tip moves: from (pinY - 22) to pinY over the scroll window.
 
-  // Purple Wire: Animates from loose coordinate (90, 310) to plug point (142, 266)
-  const purpleWireX = useTransform(scrollYProgress, [0.65, 0.88], [90, 142]);
-  const purpleWireY = useTransform(scrollYProgress, [0.65, 0.88], [310, 266]);
+  // Green Wire tip Y: drops from 54 → 76 as scroll goes 0.05 → 0.28
+  const greenTipY = useTransform(scrollYProgress, [0.05, 0.28], [54, 76]);
+
+  // Blue Wire tip Y: drops from 144 → 166 as scroll goes 0.35 → 0.60
+  const blueTipY = useTransform(scrollYProgress, [0.35, 0.60], [144, 166]);
+
+  // Purple Wire tip Y: drops from 234 → 256 as scroll goes 0.65 → 0.88
+  const purpleTipY = useTransform(scrollYProgress, [0.65, 0.88], [234, 256]);
 
   return (
     // Tall container for scroll pinning. This pins the section during scrolling.
@@ -194,99 +200,101 @@ export default function Experience() {
                   <circle cx="190" cy="130" r="5" fill={activeStep >= 2 ? "#3b82f6" : "#1e293b"} style={{ filter: activeStep >= 2 ? "url(#led-glow)" : "none", transition: "all 0.3s" }} />
                   <circle cx="190" cy="220" r="5" fill={activeStep >= 3 ? "#c084fc" : "#1e293b"} style={{ filter: activeStep >= 3 ? "url(#led-glow)" : "none", transition: "all 0.3s" }} />
 
-                  {/* Wire 1 (Green) */}
+                  {/* ── WIRE 1 (Green) — straight from top edge down to APWEN pin (132, 76) ── */}
                   <g>
-                    {/* Shadow */}
-                    <motion.path
-                      d={useTransform(
-                        [greenWireX, greenWireY],
-                        ([wx, wy]) => `M 45 90 C 50 160, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#000" strokeWidth="4" opacity="0.3" filter="url(#wire-shadow)"
+                    {/* Fixed straight body from top of board down to just above the hole */}
+                    <line x1="132" y1="10" x2="132" y2="54" stroke="#000" strokeWidth="5" strokeOpacity="0.3" />
+                    <line x1="132" y1="10" x2="132" y2="54" stroke="#10b981" strokeWidth="3.5" strokeLinecap="round" />
+                    <line x1="132" y1="10" x2="132" y2="54" stroke="#a7f3d0" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.7" />
+                    {/* Plastic insulation sleeve at top */}
+                    <rect x="128" y="8" width="8" height="10" fill="#166534" rx="2" />
+                    {/* Animated plug tip dropping into hole */}
+                    <motion.line
+                      x1="132" x2="132"
+                      y1={54}
+                      y2={greenTipY}
+                      stroke="#10b981" strokeWidth="3.5" strokeLinecap="round"
                     />
-                    {/* Wire Body */}
-                    <motion.path
-                      d={useTransform(
-                        [greenWireX, greenWireY],
-                        ([wx, wy]) => `M 45 90 C 50 160, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#10b981" strokeWidth="3.2" strokeLinecap="round"
+                    <motion.line
+                      x1="132" x2="132"
+                      y1={54}
+                      y2={greenTipY}
+                      stroke="#a7f3d0" strokeWidth="1.2" strokeLinecap="round" opacity="0.7"
                     />
-                    {/* Highlight */}
-                    <motion.path
-                      d={useTransform(
-                        [greenWireX, greenWireY],
-                        ([wx, wy]) => `M 45 90 C 50 160, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#a7f3d0" strokeWidth="1" strokeLinecap="round" opacity="0.8"
-                    />
-                    {/* Plug connector */}
+                    {/* Metal pin tip */}
                     <motion.rect
-                      x={useTransform(greenWireX, (x) => Number(x) - 2.5)}
-                      y={useTransform(greenWireY, (y) => Number(y) - 8)}
-                      width="5" height="8" fill="#334155" rx="1"
+                      x={129.5} y={useTransform(greenTipY, (y) => Number(y) - 4)}
+                      width="5" height="5" fill="#94a3b8" rx="0.5"
                     />
                   </g>
 
-                  {/* Wire 2 (Blue) */}
+                  {/* ── WIRE 2 (Blue) — straight from right edge in to Nestlé pin (248, 166) ── */}
                   <g>
-                    <motion.path
-                      d={useTransform(
-                        [blueWireX, blueWireY],
-                        ([wx, wy]) => `M 355 180 C 330 260, ${Number(wx) + 30} ${Number(wy) + 20}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#000" strokeWidth="4" opacity="0.3" filter="url(#wire-shadow)"
+                    {/* Fixed horizontal body from right of board to just before hole */}
+                    <line x1="370" y1="166" x2="270" y2="166" stroke="#000" strokeWidth="5" strokeOpacity="0.3" />
+                    <line x1="370" y1="166" x2="270" y2="166" stroke="#3b82f6" strokeWidth="3.5" strokeLinecap="round" />
+                    <line x1="370" y1="166" x2="270" y2="166" stroke="#93c5fd" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.7" />
+                    {/* Sleeve */}
+                    <rect x="362" y="162" width="10" height="8" fill="#1e3a8a" rx="2" />
+                    {/* Animated plug tip sliding left into hole */}
+                    <motion.line
+                      y1="166" y2="166"
+                      x1={270}
+                      x2={useTransform(blueTipY, (y) => {
+                        // Reuse blueTipY as a 0–1 progress indicator mapped to x: 270 → 248
+                        const progress = (Number(y) - 144) / (166 - 144);
+                        return 270 - progress * 22;
+                      })}
+                      stroke="#3b82f6" strokeWidth="3.5" strokeLinecap="round"
                     />
-                    <motion.path
-                      d={useTransform(
-                        [blueWireX, blueWireY],
-                        ([wx, wy]) => `M 355 180 C 330 260, ${Number(wx) + 30} ${Number(wy) + 20}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#3b82f6" strokeWidth="3.2" strokeLinecap="round"
+                    <motion.line
+                      y1="166" y2="166"
+                      x1={270}
+                      x2={useTransform(blueTipY, (y) => {
+                        const progress = (Number(y) - 144) / (166 - 144);
+                        return 270 - progress * 22;
+                      })}
+                      stroke="#93c5fd" strokeWidth="1.2" strokeLinecap="round" opacity="0.7"
                     />
-                    <motion.path
-                      d={useTransform(
-                        [blueWireX, blueWireY],
-                        ([wx, wy]) => `M 355 180 C 330 260, ${Number(wx) + 30} ${Number(wy) + 20}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#93c5fd" strokeWidth="1" strokeLinecap="round" opacity="0.8"
-                    />
+                    {/* Metal pin tip */}
                     <motion.rect
-                      x={useTransform(blueWireX, (x) => Number(x) - 2.5)}
-                      y={useTransform(blueWireY, (y) => Number(y) - 8)}
-                      width="5" height="8" fill="#334155" rx="1"
+                      y={163}
+                      x={useTransform(blueTipY, (y) => {
+                        const progress = (Number(y) - 144) / (166 - 144);
+                        return (270 - progress * 22) - 5;
+                      })}
+                      width="5" height="6" fill="#94a3b8" rx="0.5"
                     />
                   </g>
 
-                  {/* Wire 3 (Purple) */}
+                  {/* ── WIRE 3 (Purple) — straight from bottom edge up to NION pin (132, 256) ── */}
                   <g>
-                    <motion.path
-                      d={useTransform(
-                        [purpleWireX, purpleWireY],
-                        ([wx, wy]) => `M 45 270 C 60 340, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#000" strokeWidth="4" opacity="0.3" filter="url(#wire-shadow)"
+                    {/* Fixed straight body from bottom of board up to just below hole */}
+                    <line x1="132" y1="350" x2="132" y2="278" stroke="#000" strokeWidth="5" strokeOpacity="0.3" />
+                    <line x1="132" y1="350" x2="132" y2="278" stroke="#c084fc" strokeWidth="3.5" strokeLinecap="round" />
+                    <line x1="132" y1="350" x2="132" y2="278" stroke="#e9d5ff" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.7" />
+                    {/* Sleeve */}
+                    <rect x="128" y="344" width="8" height="10" fill="#581c87" rx="2" />
+                    {/* Animated plug tip moving UP into hole */}
+                    <motion.line
+                      x1="132" x2="132"
+                      y1={278}
+                      y2={purpleTipY}
+                      stroke="#c084fc" strokeWidth="3.5" strokeLinecap="round"
                     />
-                    <motion.path
-                      d={useTransform(
-                        [purpleWireX, purpleWireY],
-                        ([wx, wy]) => `M 45 270 C 60 340, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#c084fc" strokeWidth="3.2" strokeLinecap="round"
+                    <motion.line
+                      x1="132" x2="132"
+                      y1={278}
+                      y2={purpleTipY}
+                      stroke="#e9d5ff" strokeWidth="1.2" strokeLinecap="round" opacity="0.7"
                     />
-                    <motion.path
-                      d={useTransform(
-                        [purpleWireX, purpleWireY],
-                        ([wx, wy]) => `M 45 270 C 60 340, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
-                      )}
-                      fill="none" stroke="#e9d5ff" strokeWidth="1" strokeLinecap="round" opacity="0.8"
-                    />
+                    {/* Metal pin tip */}
                     <motion.rect
-                      x={useTransform(purpleWireX, (x) => Number(x) - 2.5)}
-                      y={useTransform(purpleWireY, (y) => Number(y) - 8)}
-                      width="5" height="8" fill="#334155" rx="1"
+                      x={129.5} y={useTransform(purpleTipY, (y) => Number(y) - 1)}
+                      width="5" height="5" fill="#94a3b8" rx="0.5"
                     />
                   </g>
+
                 </svg>
 
                 {/* Overlaid Floating Popup Cards directly on top of Breadboard */}
