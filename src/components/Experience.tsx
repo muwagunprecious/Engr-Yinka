@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
-import { Award, Briefcase, GraduationCap } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValueEvent } from "framer-motion";
+import { useRef, useState } from "react";
+import { Award, Briefcase, GraduationCap, Link2 } from "lucide-react";
 import React from "react";
 
 interface ExperienceItem {
@@ -14,6 +14,7 @@ interface ExperienceItem {
   icon: React.ReactNode;
   color: string;
   badge: string;
+  heading: string;
 }
 
 const experiences: ExperienceItem[] = [
@@ -22,371 +23,345 @@ const experiences: ExperienceItem[] = [
     company: "APWEN OOU",
     role: "President",
     period: "Leadership Chapter",
-    description: "Association of Professional Women Engineers of Nigeria (APWEN), OOU Collegiate Chapter. Leading initiatives that empower and mentor women pursuing engineering and technology careers.",
-    icon: <Award className="w-5 h-5" />,
-    color: "#10b981", // Emerald green
     badge: "🏆 Leadership",
+    heading: "Leadership Chapter",
+    description: "Association of Professional Women Engineers of Nigeria (APWEN), OOU Collegiate Chapter. Leading initiatives that empower and mentor women pursuing engineering and technology careers.",
+    icon: <Award className="w-4 h-4" />,
+    color: "#10b981", // Emerald green
   },
   {
     id: 2,
     company: "Nestlé",
     role: "Automation Experience",
     period: "Industrial Practice",
-    description: "Worked on industrial automation systems, gaining practical experience in engineering operations, automation workflows, and modern industrial technologies.",
-    icon: <Briefcase className="w-5 h-5" />,
-    color: "#3b82f6", // Blue
     badge: "🏭 Automation",
+    heading: "Industrial Practice",
+    description: "Worked on industrial automation systems, gaining practical experience in engineering operations, automation workflows, and modern industrial technologies.",
+    icon: <Briefcase className="w-4 h-4" />,
+    color: "#3b82f6", // Blue
   },
   {
     id: 3,
     company: "NION Academy",
     role: "Co-Founder",
     period: "EdTech Venture",
-    description: "Helping create educational opportunities through innovative EdTech solutions designed to improve learning outcomes for students.",
-    icon: <GraduationCap className="w-5 h-5" />,
-    color: "#c084fc", // Purple
     badge: "🎓 EdTech",
+    heading: "EdTech Venture",
+    description: "Helping create educational opportunities through innovative EdTech solutions designed to improve learning outcomes for students.",
+    icon: <GraduationCap className="w-4 h-4" />,
+    color: "#c084fc", // Purple
   },
 ];
 
 export default function Experience() {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Track scroll progress of the entire section
+  // Track scroll progress of the entire section height
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   });
 
-  // Steps based on scroll position:
-  // 0: Initial (no connection)
-  // 1: APWEN connected (at scrollYProgress > 0.25)
-  // 2: Nestlé connected (at scrollYProgress > 0.5)
-  // 3: NION connected (at scrollYProgress > 0.75)
+  // Calculate current active step based on scroll
   const [activeStep, setActiveStep] = useState(0);
 
-  useEffect(() => {
-    return scrollYProgress.onChange((val) => {
-      if (val < 0.28) {
-        setActiveStep(0);
-      } else if (val < 0.52) {
-        setActiveStep(1);
-      } else if (val < 0.76) {
-        setActiveStep(2);
-      } else {
-        setActiveStep(3);
-      }
-    });
-  }, [scrollYProgress]);
+  useMotionValueEvent(scrollYProgress, "change", (val) => {
+    if (val < 0.28) {
+      setActiveStep(0);
+    } else if (val < 0.60) {
+      setActiveStep(1);
+    } else if (val < 0.88) {
+      setActiveStep(2);
+    } else {
+      setActiveStep(3);
+    }
+  });
 
-  // Transform scroll positions into wire-end coordinates to simulate plugging in!
-  // Wire 1 (Green): Plugs in between 0.15 and 0.28 progress.
-  const greenWireX = useTransform(scrollYProgress, [0.12, 0.28], [50, 110]);
-  const greenWireY = useTransform(scrollYProgress, [0.12, 0.28], [240, 100]);
+  // Green Wire: Animates from loose coordinate (90, 130) to plug point (142, 86)
+  const greenWireX = useTransform(scrollYProgress, [0.05, 0.28], [90, 142]);
+  const greenWireY = useTransform(scrollYProgress, [0.05, 0.28], [130, 86]);
 
-  // Wire 2 (Blue): Plugs in between 0.40 and 0.52 progress.
-  const blueWireX = useTransform(scrollYProgress, [0.36, 0.52], [350, 190]);
-  const blueWireY = useTransform(scrollYProgress, [0.36, 0.52], [240, 180]);
+  // Blue Wire: Animates from loose coordinate (290, 220) to plug point (258, 176)
+  const blueWireX = useTransform(scrollYProgress, [0.35, 0.60], [290, 258]);
+  const blueWireY = useTransform(scrollYProgress, [0.35, 0.60], [220, 176]);
 
-  // Wire 3 (Purple): Plugs in between 0.62 and 0.76 progress.
-  const purpleWireX = useTransform(scrollYProgress, [0.58, 0.76], [50, 110]);
-  const purpleWireY = useTransform(scrollYProgress, [0.58, 0.76], [330, 260]);
+  // Purple Wire: Animates from loose coordinate (90, 310) to plug point (142, 266)
+  const purpleWireX = useTransform(scrollYProgress, [0.65, 0.88], [90, 142]);
+  const purpleWireY = useTransform(scrollYProgress, [0.65, 0.88], [310, 266]);
 
   return (
-    <section
-      id="experience"
-      ref={containerRef}
-      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden border-t border-white/5 z-10"
-    >
-      <div className="max-w-7xl mx-auto z-10 relative">
-        {/* Section Heading */}
-        <div className="flex flex-col items-center text-center mb-16 md:mb-24">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase mb-4"
-          >
-            Experience & Journey
-          </motion.h2>
-          <motion.h3
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-sans text-3xl md:text-5xl font-bold tracking-tighter text-white max-w-3xl"
-          >
-            Building innovative solutions across AI, Embedded Systems, IoT, and STEM leadership.
-          </motion.h3>
-        </div>
-
-        {/* Layout: Sticky left image, Breadboard + Interactive timeline on the right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    // Tall container for scroll pinning. This pins the section during scrolling.
+    <div ref={containerRef} className="relative w-full h-[350vh] border-t border-white/5">
+      
+      {/* Sticky viewport container */}
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden bg-black z-10">
+        
+        {/* Dynamic decorative grids */}
+        <div className="absolute inset-0 bg-noise opacity-5 pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto w-full px-6 md:px-12 lg:px-24 z-10 relative">
           
-          {/* Left Column: Her Image (Sticky) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-5 lg:sticky lg:top-32 w-full aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden glass relative group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10" />
-            <img
-              src="/engr_yinka_1.jpeg"
-              alt="Engineer Yinka Working"
-              className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-105"
-            />
-            <div className="absolute bottom-6 left-6 z-20">
-              <span className="font-mono text-xs text-white/50 uppercase tracking-widest">
-                Working Field Operations
-              </span>
-              <h4 className="font-sans text-lg font-bold text-white mt-1">
-                Oyindamola Deji-Agboola
-              </h4>
-            </div>
-          </motion.div>
-
-          {/* Right Column: Breadboard + Timeline */}
-          <div className="lg:col-span-7 flex flex-col gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Interactive Breadboard Header */}
-            <div className="glass border border-white/10 rounded-2xl p-6 relative overflow-hidden">
-              <div className="absolute inset-0 bg-noise opacity-5 pointer-events-none" />
-              <div className="flex justify-between items-center mb-4">
-                <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
-                  Interactive Breadboard Wiring Stage
+            {/* Left Column: Her Image */}
+            <div className="lg:col-span-5 w-full aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden glass relative">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10" />
+              <img
+                src="/engr_yinka_1.jpeg"
+                alt="Engineer Yinka Working"
+                className="w-full h-full object-cover filter grayscale"
+              />
+              <div className="absolute bottom-6 left-6 z-20">
+                <span className="font-mono text-xs text-white/50 uppercase tracking-widest">
+                  Working Field Operations
                 </span>
-                <span className="font-mono text-[10px] px-2 py-0.5 rounded-full border border-white/20 text-white/70">
-                  {activeStep === 0 ? "Disconnected" : `${activeStep}/3 Connected`}
-                </span>
+                <h4 className="font-sans text-lg font-bold text-white mt-1">
+                  Oyindamola Deji-Agboola
+                </h4>
+              </div>
+            </div>
+
+            {/* Right Column: Breadboard + Pinned Experience Details */}
+            <div className="lg:col-span-7 flex flex-col items-center relative">
+              
+              {/* Heading */}
+              <div className="text-center mb-8 w-full">
+                <h2 className="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase mb-2">
+                  Experience & Journey
+                </h2>
+                <p className="text-white/60 text-xs font-mono">
+                  Scroll to plug in jumper wires and power each milestone.
+                </p>
               </div>
 
-              {/* Breadboard SVG */}
-              <svg viewBox="0 0 400 360" className="w-full max-w-md mx-auto block overflow-visible">
-                <defs>
-                  {/* Outer shadow */}
-                  <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-                    <feDropShadow dx="0" dy="8" stdDeviation="6" floodColor="#000000" floodOpacity="0.5" />
-                  </filter>
-                  {/* Glow effect */}
-                  <filter id="glow-led">
-                    <feGaussianBlur stdDeviation="3" result="blur" />
-                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                  </filter>
-                </defs>
-
-                {/* Breadboard Board Body */}
-                <rect x="30" y="20" width="340" height="320" rx="8" fill="#1e293b" stroke="#334155" strokeWidth="2.5" filter="url(#shadow)" />
-                <rect x="35" y="25" width="330" height="310" rx="6" fill="#0f172a" />
-
-                {/* Power Rails (Vertical Red/Blue stripes on left) */}
-                <line x1="55" y1="40" x2="55" y2="320" stroke="#ef4444" strokeWidth="1.5" strokeOpacity="0.4" strokeDasharray="6 4" />
-                <line x1="70" y1="40" x2="70" y2="320" stroke="#3b82f6" strokeWidth="1.5" strokeOpacity="0.4" strokeDasharray="6 4" />
+              {/* Breadboard Visual Container */}
+              <div className="relative w-full max-w-lg glass border border-white/10 rounded-3xl p-8 overflow-hidden shadow-2xl">
                 
-                {/* Power Rails (Vertical Red/Blue stripes on right) */}
-                <line x1="330" y1="40" x2="330" y2="320" stroke="#3b82f6" strokeWidth="1.5" strokeOpacity="0.4" strokeDasharray="6 4" />
-                <line x1="345" y1="40" x2="345" y2="320" stroke="#ef4444" strokeWidth="1.5" strokeOpacity="0.4" strokeDasharray="6 4" />
+                {/* SVG Breadboard */}
+                <svg viewBox="0 0 400 360" className="w-full mx-auto block overflow-visible">
+                  <defs>
+                    <filter id="wire-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="2" dy="6" stdDeviation="4" floodColor="#000000" floodOpacity="0.6" />
+                    </filter>
+                    <filter id="led-glow">
+                      <feGaussianBlur stdDeviation="4" result="blur" />
+                      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                  </defs>
 
-                {/* Draw Tie-Point Hole Rows */}
-                {Array.from({ length: 15 }).map((_, r) => {
-                  const rowY = 50 + r * 18;
-                  return (
-                    <g key={r} opacity="0.6">
-                      {/* Left Block pins (a, b, c, d, e) */}
-                      {Array.from({ length: 5 }).map((_, c) => (
-                        <circle key={`l-${c}`} cx={110 + c * 16} cy={rowY} r="2.5" fill="#334155" />
-                      ))}
-                      {/* Center divide */}
-                      <rect x="198" y={rowY - 8} width="4" height="16" fill="#1e293b" rx="0.5" />
-                      {/* Right Block pins (f, g, h, i, j) */}
-                      {Array.from({ length: 5 }).map((_, c) => (
-                        <circle key={`r-${c}`} cx={226 + c * 16} cy={rowY} r="2.5" fill="#334155" />
-                      ))}
-                      {/* Row Label */}
-                      <text x="94" y={rowY + 3} fill="#475569" fontSize="7" fontFamily="monospace" textAnchor="middle">{r * 2 + 1}</text>
-                    </g>
-                  );
-                })}
+                  {/* Plastic board shell */}
+                  <rect x="20" y="10" width="360" height="340" rx="12" fill="#1e293b" stroke="#334155" strokeWidth="2" />
+                  <rect x="26" y="16" width="348" height="328" rx="10" fill="#090d16" />
 
-                {/* Connection Terminals (Highlight destinations) */}
-                {/* APWEN destination hole: Row 3, column C (142, 86) */}
-                <circle cx="142" cy="86" r="4.5" fill="none" stroke="#10b981" strokeWidth="1.2" className="animate-pulse" />
-                <circle cx="142" cy="86" r="2" fill="#10b981" />
+                  {/* Power bus rails */}
+                  <line x1="45" y1="30" x2="45" y2="330" stroke="#ef4444" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="5 3" />
+                  <line x1="60" y1="30" x2="60" y2="330" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="5 3" />
+                  <line x1="340" y1="30" x2="340" y2="330" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="5 3" />
+                  <line x1="355" y1="30" x2="355" y2="330" stroke="#ef4444" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="5 3" />
 
-                {/* Nestlé destination hole: Row 8, column H (258, 176) */}
-                <circle cx="258" cy="176" r="4.5" fill="none" stroke="#3b82f6" strokeWidth="1.2" className="animate-pulse" />
-                <circle cx="258" cy="176" r="2" fill="#3b82f6" />
+                  {/* Tiny pin hole arrays */}
+                  {Array.from({ length: 16 }).map((_, r) => {
+                    const rowY = 40 + r * 18;
+                    return (
+                      <g key={r} opacity="0.5">
+                        {Array.from({ length: 5 }).map((_, c) => (
+                          <circle key={`l-${c}`} cx={100 + c * 16} cy={rowY} r="2.2" fill="#1e293b" stroke="#334155" strokeWidth="0.5" />
+                        ))}
+                        <rect x="188" y={rowY - 8} width="4" height="16" fill="#1e293b" opacity="0.8" />
+                        {Array.from({ length: 5 }).map((_, c) => (
+                          <circle key={`r-${c}`} cx={216 + c * 16} cy={rowY} r="2.2" fill="#1e293b" stroke="#334155" strokeWidth="0.5" />
+                        ))}
+                        <text x="82" y={rowY + 2.5} fill="#475569" fontSize="6.5" fontFamily="monospace" textAnchor="middle">{r * 2 + 1}</text>
+                      </g>
+                    );
+                  })}
 
-                {/* NION Academy destination hole: Row 13, column C (142, 266) */}
-                <circle cx="142" cy="266" r="4.5" fill="none" stroke="#c084fc" strokeWidth="1.2" className="animate-pulse" />
-                <circle cx="142" cy="266" r="2" fill="#c084fc" />
+                  {/* Metallic plug targets */}
+                  {/* APWEN destination: Row 3, column C (132, 76) */}
+                  <circle cx="132" cy="76" r="4" fill="none" stroke="#10b981" strokeWidth="1" className="animate-pulse" />
+                  <circle cx="132" cy="76" r="1.5" fill="#10b981" />
 
-                {/* Status LEDs on Breadboard */}
-                {/* Green LED (APWEN) */}
-                <circle cx="200" cy="50" r="6" fill={activeStep >= 1 ? "#10b981" : "#1e293b"} style={{ filter: activeStep >= 1 ? "url(#glow-led)" : "none", transition: "all 0.3s" }} />
-                {/* Blue LED (Nestle) */}
-                <circle cx="200" cy="140" r="6" fill={activeStep >= 2 ? "#3b82f6" : "#1e293b"} style={{ filter: activeStep >= 2 ? "url(#glow-led)" : "none", transition: "all 0.3s" }} />
-                {/* Purple LED (NION) */}
-                <circle cx="200" cy="230" r="6" fill={activeStep >= 3 ? "#c084fc" : "#1e293b"} style={{ filter: activeStep >= 3 ? "url(#glow-led)" : "none", transition: "all 0.3s" }} />
+                  {/* Nestlé destination: Row 8, column H (248, 166) */}
+                  <circle cx="248" cy="166" r="4" fill="none" stroke="#3b82f6" strokeWidth="1" className="animate-pulse" />
+                  <circle cx="248" cy="166" r="1.5" fill="#3b82f6" />
 
-                {/* Wires */}
-                {/* Wire 1: APWEN (Green) */}
-                <g>
-                  <motion.path
-                    d={useTransform(
-                      [greenWireX, greenWireY],
-                      ([wx, wy]) => `M 55 100 C 65 180, ${Number(wx) - 40} ${Number(wy) + 30}, ${wx} ${wy}`
-                    )}
-                    fill="none"
-                    stroke="#10b981"
-                    strokeWidth="3.5"
-                    strokeLinecap="round"
-                  />
-                  {/* Glow core */}
-                  <motion.path
-                    d={useTransform(
-                      [greenWireX, greenWireY],
-                      ([wx, wy]) => `M 55 100 C 65 180, ${Number(wx) - 40} ${Number(wy) + 30}, ${wx} ${wy}`
-                    )}
-                    fill="none"
-                    stroke="#a7f3d0"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    opacity="0.8"
-                  />
-                </g>
+                  {/* NION destination: Row 13, column C (132, 256) */}
+                  <circle cx="132" cy="256" r="4" fill="none" stroke="#c084fc" strokeWidth="1" className="animate-pulse" />
+                  <circle cx="132" cy="256" r="1.5" fill="#c084fc" />
 
-                {/* Wire 2: Nestlé (Blue) */}
-                <g>
-                  <motion.path
-                    d={useTransform(
-                      [blueWireX, blueWireY],
-                      ([wx, wy]) => `M 345 190 C 320 280, ${Number(wx) + 40} ${Number(wy) + 20}, ${wx} ${wy}`
-                    )}
-                    fill="none"
-                    stroke="#3b82f6"
-                    strokeWidth="3.5"
-                    strokeLinecap="round"
-                  />
-                  <motion.path
-                    d={useTransform(
-                      [blueWireX, blueWireY],
-                      ([wx, wy]) => `M 345 190 C 320 280, ${Number(wx) + 40} ${Number(wy) + 20}, ${wx} ${wy}`
-                    )}
-                    fill="none"
-                    stroke="#93c5fd"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    opacity="0.8"
-                  />
-                </g>
+                  {/* LEDs */}
+                  <circle cx="190" cy="40" r="5" fill={activeStep >= 1 ? "#10b981" : "#1e293b"} style={{ filter: activeStep >= 1 ? "url(#led-glow)" : "none", transition: "all 0.3s" }} />
+                  <circle cx="190" cy="130" r="5" fill={activeStep >= 2 ? "#3b82f6" : "#1e293b"} style={{ filter: activeStep >= 2 ? "url(#led-glow)" : "none", transition: "all 0.3s" }} />
+                  <circle cx="190" cy="220" r="5" fill={activeStep >= 3 ? "#c084fc" : "#1e293b"} style={{ filter: activeStep >= 3 ? "url(#led-glow)" : "none", transition: "all 0.3s" }} />
 
-                {/* Wire 3: NION Academy (Purple) */}
-                <g>
-                  <motion.path
-                    d={useTransform(
-                      [purpleWireX, purpleWireY],
-                      ([wx, wy]) => `M 55 280 C 75 350, ${Number(wx) - 40} ${Number(wy) + 30}, ${wx} ${wy}`
-                    )}
-                    fill="none"
-                    stroke="#c084fc"
-                    strokeWidth="3.5"
-                    strokeLinecap="round"
-                  />
-                  <motion.path
-                    d={useTransform(
-                      [purpleWireX, purpleWireY],
-                      ([wx, wy]) => `M 55 280 C 75 350, ${Number(wx) - 40} ${Number(wy) + 30}, ${wx} ${wy}`
-                    )}
-                    fill="none"
-                    stroke="#e9d5ff"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    opacity="0.8"
-                  />
-                </g>
-              </svg>
-            </div>
-
-            {/* Scrolling Timeline/Info Cards */}
-            <div className="flex flex-col gap-6 relative">
-              {experiences.map((exp) => {
-                const isConnected = activeStep >= exp.id;
-                
-                return (
-                  <motion.div
-                    key={exp.id}
-                    initial={{ opacity: 0.3, y: 20 }}
-                    animate={{ 
-                      opacity: isConnected ? 1 : 0.25, 
-                      scale: isConnected ? 1 : 0.98,
-                      y: 0
-                    }}
-                    transition={{ duration: 0.4 }}
-                    className="glass border rounded-2xl p-6 md:p-8 relative overflow-hidden transition-all duration-300"
-                    style={{ 
-                      borderColor: isConnected ? `${exp.color}40` : "rgba(255, 255, 255, 0.05)",
-                      boxShadow: isConnected ? `0 0 25px ${exp.color}10` : "none"
-                    }}
-                  >
-                    {/* Background glow when active */}
-                    <div 
-                      className="absolute -right-10 -bottom-10 w-32 h-32 rounded-full blur-3xl opacity-0 transition-opacity duration-500 pointer-events-none"
-                      style={{ 
-                        background: exp.color,
-                        opacity: isConnected ? 0.15 : 0 
-                      }} 
+                  {/* Wire 1 (Green) */}
+                  <g>
+                    {/* Shadow */}
+                    <motion.path
+                      d={useTransform(
+                        [greenWireX, greenWireY],
+                        ([wx, wy]) => `M 45 90 C 50 160, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#000" strokeWidth="4" opacity="0.3" filter="url(#wire-shadow)"
                     />
+                    {/* Wire Body */}
+                    <motion.path
+                      d={useTransform(
+                        [greenWireX, greenWireY],
+                        ([wx, wy]) => `M 45 90 C 50 160, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#10b981" strokeWidth="3.2" strokeLinecap="round"
+                    />
+                    {/* Highlight */}
+                    <motion.path
+                      d={useTransform(
+                        [greenWireX, greenWireY],
+                        ([wx, wy]) => `M 45 90 C 50 160, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#a7f3d0" strokeWidth="1" strokeLinecap="round" opacity="0.8"
+                    />
+                    {/* Plug connector */}
+                    <motion.rect
+                      x={useTransform(greenWireX, (x) => Number(x) - 2.5)}
+                      y={useTransform(greenWireY, (y) => Number(y) - 8)}
+                      width="5" height="8" fill="#334155" rx="1"
+                    />
+                  </g>
 
-                    {/* Timeline Marker Row */}
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex items-center gap-3">
-                        <span 
-                          className="w-10 h-10 rounded-xl flex items-center justify-center border font-semibold transition-colors"
-                          style={{ 
-                            color: isConnected ? exp.color : "rgba(255, 255, 255, 0.4)",
-                            borderColor: isConnected ? `${exp.color}50` : "rgba(255, 255, 255, 0.1)",
-                            backgroundColor: isConnected ? `${exp.color}10` : "transparent"
-                          }}
-                        >
-                          {exp.icon}
-                        </span>
-                        <div>
-                          <span className="font-mono text-xs text-white/40 block">
-                            {exp.period}
+                  {/* Wire 2 (Blue) */}
+                  <g>
+                    <motion.path
+                      d={useTransform(
+                        [blueWireX, blueWireY],
+                        ([wx, wy]) => `M 355 180 C 330 260, ${Number(wx) + 30} ${Number(wy) + 20}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#000" strokeWidth="4" opacity="0.3" filter="url(#wire-shadow)"
+                    />
+                    <motion.path
+                      d={useTransform(
+                        [blueWireX, blueWireY],
+                        ([wx, wy]) => `M 355 180 C 330 260, ${Number(wx) + 30} ${Number(wy) + 20}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#3b82f6" strokeWidth="3.2" strokeLinecap="round"
+                    />
+                    <motion.path
+                      d={useTransform(
+                        [blueWireX, blueWireY],
+                        ([wx, wy]) => `M 355 180 C 330 260, ${Number(wx) + 30} ${Number(wy) + 20}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#93c5fd" strokeWidth="1" strokeLinecap="round" opacity="0.8"
+                    />
+                    <motion.rect
+                      x={useTransform(blueWireX, (x) => Number(x) - 2.5)}
+                      y={useTransform(blueWireY, (y) => Number(y) - 8)}
+                      width="5" height="8" fill="#334155" rx="1"
+                    />
+                  </g>
+
+                  {/* Wire 3 (Purple) */}
+                  <g>
+                    <motion.path
+                      d={useTransform(
+                        [purpleWireX, purpleWireY],
+                        ([wx, wy]) => `M 45 270 C 60 340, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#000" strokeWidth="4" opacity="0.3" filter="url(#wire-shadow)"
+                    />
+                    <motion.path
+                      d={useTransform(
+                        [purpleWireX, purpleWireY],
+                        ([wx, wy]) => `M 45 270 C 60 340, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#c084fc" strokeWidth="3.2" strokeLinecap="round"
+                    />
+                    <motion.path
+                      d={useTransform(
+                        [purpleWireX, purpleWireY],
+                        ([wx, wy]) => `M 45 270 C 60 340, ${Number(wx) - 30} ${Number(wy) + 30}, ${wx} ${wy}`
+                      )}
+                      fill="none" stroke="#e9d5ff" strokeWidth="1" strokeLinecap="round" opacity="0.8"
+                    />
+                    <motion.rect
+                      x={useTransform(purpleWireX, (x) => Number(x) - 2.5)}
+                      y={useTransform(purpleWireY, (y) => Number(y) - 8)}
+                      width="5" height="8" fill="#334155" rx="1"
+                    />
+                  </g>
+                </svg>
+
+                {/* Overlaid Floating Popup Cards directly on top of Breadboard */}
+                <div className="absolute inset-0 flex items-center justify-center p-6 pointer-events-none">
+                  <AnimatePresence mode="wait">
+                    {activeStep > 0 && activeStep <= experiences.length && (
+                      <motion.div
+                        key={activeStep}
+                        initial={{ opacity: 0, scale: 0.85, y: 15 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.85, y: -15 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="pointer-events-auto w-full max-w-sm rounded-2xl border p-5 md:p-6 backdrop-blur-xl"
+                        style={{
+                          background: "rgba(9, 13, 22, 0.95)",
+                          borderColor: `${experiences[activeStep - 1].color}50`,
+                          boxShadow: `0 0 35px ${experiences[activeStep - 1].color}20, 0 10px 30px rgba(0,0,0,0.8)`,
+                        }}
+                      >
+                        {/* Top Accent line */}
+                        <div 
+                          className="h-1 w-20 rounded-full mb-4" 
+                          style={{ backgroundColor: experiences[activeStep - 1].color }} 
+                        />
+                        
+                        {/* Metadata Tag */}
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="font-mono text-[10px] text-white/40 uppercase tracking-widest">
+                            {experiences[activeStep - 1].heading}
                           </span>
-                          <span className="font-mono text-[10px] uppercase font-bold tracking-wider mt-0.5 block" style={{ color: isConnected ? exp.color : "rgba(255, 255, 255, 0.4)" }}>
-                            {exp.badge}
+                          <span 
+                            className="font-mono text-[9px] font-bold px-2 py-0.5 rounded-full border"
+                            style={{ 
+                              color: experiences[activeStep - 1].color, 
+                              borderColor: `${experiences[activeStep - 1].color}40`,
+                              backgroundColor: `${experiences[activeStep - 1].color}10`
+                            }}
+                          >
+                            {experiences[activeStep - 1].badge}
                           </span>
                         </div>
-                      </div>
-                      
-                      <span className="font-mono text-xs text-white/30">
-                        {isConnected ? "CONNECTED" : "DISCONNECTED"}
-                      </span>
-                    </div>
 
-                    {/* Content */}
-                    <h4 className="font-sans text-2xl font-bold text-white mb-1">
-                      {exp.company}
-                    </h4>
-                    <p className="font-mono text-sm text-white/70 mb-4">
-                      {exp.role}
-                    </p>
-                    <p className="text-white/60 text-base leading-relaxed">
-                      {exp.description}
-                    </p>
-                  </motion.div>
-                );
-              })}
+                        {/* Title Info */}
+                        <h4 className="font-sans text-xl font-bold text-white leading-tight">
+                          {experiences[activeStep - 1].company}
+                        </h4>
+                        <p className="font-mono text-xs text-white/80 mt-1 mb-4 flex items-center gap-1.5">
+                          <Link2 className="w-3.5 h-3.5 opacity-60" style={{ color: experiences[activeStep - 1].color }} />
+                          {experiences[activeStep - 1].role}
+                        </p>
+
+                        {/* Description */}
+                        <p className="text-white/60 text-xs md:text-sm leading-relaxed">
+                          {experiences[activeStep - 1].description}
+                        </p>
+                        
+                        {/* Status bar */}
+                        <div className="mt-4 pt-3 border-t border-white/5 flex justify-between items-center text-[9px] font-mono text-white/40">
+                          <span>SYSTEM PORT: COM{activeStep}</span>
+                          <span className="font-bold uppercase tracking-wider" style={{ color: experiences[activeStep - 1].color }}>CONNECTED</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+              </div>
+
             </div>
 
           </div>
 
         </div>
       </div>
-    </section>
+
+    </div>
   );
 }
