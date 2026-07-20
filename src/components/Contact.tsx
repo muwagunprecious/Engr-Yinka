@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Linkedin, Github, Mail, Twitter, Send } from "lucide-react";
+import { Linkedin, Github, Mail, Twitter, Send, Phone, MapPin } from "lucide-react";
 import React, { useState } from "react";
 
 export default function Contact() {
@@ -48,9 +48,34 @@ export default function Contact() {
             </h3>
             <p className="text-white/60 text-base md:text-lg leading-relaxed max-w-lg">
               Whether you are looking to collaborate on cutting-edge hardware/AI projects, 
-              invite me to speak at STEM panels, partner with NION Academy, or engage in engineering mentorship — 
+              invite me to speak at STEM conferences, partner with NION Academy, or discuss engineering internships — 
               let's connect and design impactful systems.
             </p>
+
+            <div className="flex flex-col gap-4 mt-6 font-mono text-sm text-white/70">
+              <div className="flex items-center gap-3 group">
+                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+                  <Mail className="w-4 h-4 text-blue-400" />
+                </div>
+                <a href="mailto:omotoyosiagboola74@gmail.com" className="hover:text-white transition-colors">
+                  omotoyosiagboola74@gmail.com
+                </a>
+              </div>
+              <div className="flex items-center gap-3 group">
+                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+                  <Phone className="w-4 h-4 text-blue-400" />
+                </div>
+                <a href="tel:+2348154744802" className="hover:text-white transition-colors">
+                  +234 815 474 4802
+                </a>
+              </div>
+              <div className="flex items-center gap-3 group">
+                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+                  <MapPin className="w-4 h-4 text-blue-400" />
+                </div>
+                <span>Ogun State, Nigeria</span>
+              </div>
+            </div>
           </motion.div>
 
           {/* Right Side: Form */}
@@ -151,7 +176,7 @@ export default function Contact() {
           
           <div className="flex items-center gap-6">
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/oyindamola-deji-agboola-engr-yinka"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/40 hover:text-white transition-colors p-2 border border-white/5 rounded-full bg-white/5 hover:border-white/20"
@@ -167,7 +192,7 @@ export default function Contact() {
               <Github className="w-4 h-4" />
             </a>
             <a
-              href="mailto:yinka@example.com"
+              href="mailto:omotoyosiagboola74@gmail.com"
               className="text-white/40 hover:text-white transition-colors p-2 border border-white/5 rounded-full bg-white/5 hover:border-white/20"
             >
               <Mail className="w-4 h-4" />

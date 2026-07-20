@@ -11,10 +11,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Oyindamola Deji-Agboola | Engineer Yinka",
   description:
-    "Award-winning Embedded Systems & IoT Engineer, AI Developer, Tech Community Leader, and STEM Advocate. Co-Founder of NION Academy.",
+    "Embedded Systems and IoT Engineer, Machine Learning Engineer, Certified Meta AI Academy Developer, and Tech Community Leader. Co-Founder of NION Academy.",
   keywords: [
     "Embedded Systems Engineer",
     "IoT Engineer",
+    "Machine Learning Engineer",
+    "Meta AI Academy Developer",
     "AI Developer",
     "STEM Advocate",
     "NION Academy",
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Oyindamola Deji-Agboola | Engineer Yinka",
     description:
-      "Award-winning Embedded Systems & IoT Engineer, AI Developer, and STEM Advocate.",
+      "Embedded Systems & IoT Engineer, Machine Learning Engineer, and Certified Meta AI Academy Developer.",
     type: "website",
   },
 };

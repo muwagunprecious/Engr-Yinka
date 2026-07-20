@@ -105,14 +105,13 @@ export default function Leadership() {
             className="flex flex-col justify-center text-white/60 text-sm leading-relaxed gap-4"
           >
             <p>
-              As the Collegiate President of APWEN OOU and Co-Founder of NION Academy, 
-              Oyindamola is dedicated to promoting STEM advocacy and empowering 
-              women in engineering across Africa.
+              Oyindamola is a multi-disciplinary leader dedicated to promoting STEM advocacy and empowering 
+              the next generation of engineers across Africa. As a Certified Meta AI Academy Developer, 
+              she bridges AI model deployment and hardware prototyping.
             </p>
             <p>
-              Her work focuses on ethical AI development, Afro-centered AI innovation, 
-              and creating hardware systems tailored to solving localized challenges in 
-              agriculture, health, and education.
+              Her focus lies in designing and building localized, Afro-centered robotics and IoT solutions 
+              to address real-world challenges while actively mentoring peers and leading tech communities.
             </p>
           </motion.div>
 
@@ -168,6 +167,76 @@ export default function Leadership() {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Speaking Engagements & Leadership Roles Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-16 pt-16 border-t border-white/5">
+          {/* Leadership Roles */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col gap-6"
+          >
+            <h4 className="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase">
+              Community Roles
+            </h4>
+            <div className="flex flex-col gap-4">
+              {[
+                { role: "President", org: "Association of Professional Women Engineers of Nigeria (APWEN), OOU Chapter", desc: "Previously Vice-President; leading initiatives that empower and mentor women pursuing engineering and technology careers." },
+                { role: "Assistant Team Lead", org: "OOU Tech Community", desc: "Previously Sub-Community Manager, Embedded Systems & IoT; training students and driving digital transformation." },
+                { role: "Chapter Lead", org: "WAAW, OOU CEES Chapter", desc: "Leading workshops and outreach to encourage girls to pursue STEM careers." },
+                { role: "Former Institution Lead", org: "Robotics and Artificial Intelligence Innovators Network (RAIN-INN)", desc: "Facilitating learning, workshops, and innovation in robotics and AI networks." }
+              ].map((item, idx) => (
+                <div key={idx} className="flex gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+                  <div className="flex-1">
+                    <h5 className="font-sans text-sm font-bold text-white">{item.role}</h5>
+                    <span className="font-mono text-[10px] text-blue-400">{item.org}</span>
+                    <p className="text-white/50 text-xs mt-1 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Speaking Engagements */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex flex-col gap-6"
+          >
+            <h4 className="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase">
+              Speaking Engagements
+            </h4>
+            <div className="flex flex-col gap-4">
+              {[
+                {
+                  event: "Rotaract District 9112 Collegiate Conference",
+                  date: "April 2026",
+                  topic: "Presented on 'The Digital Edge' - discussing digital transformation and tech opportunities.",
+                },
+                {
+                  event: "OOU Future Tech Conference",
+                  date: "March 2026",
+                  topic: "Served as a Panelist & Speaker sharing insights on tech integration and career development.",
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="flex gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-blue-500" />
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start gap-4">
+                      <h5 className="font-sans text-sm font-bold text-white">{item.event}</h5>
+                      <span className="font-mono text-[10px] text-white/30 whitespace-nowrap">{item.date}</span>
+                    </div>
+                    <p className="text-white/60 text-xs mt-2 leading-relaxed">{item.topic}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

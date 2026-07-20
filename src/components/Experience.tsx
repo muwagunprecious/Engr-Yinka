@@ -20,34 +20,34 @@ interface ExperienceItem {
 const experiences: ExperienceItem[] = [
   {
     id: 1,
-    company: "APWEN OOU",
-    role: "President",
-    period: "Leadership Chapter",
-    badge: "🏆 Leadership",
-    heading: "Leadership Chapter",
-    description: "Association of Professional Women Engineers of Nigeria (APWEN), OOU Collegiate Chapter. Leading initiatives that empower and mentor women pursuing engineering and technology careers.",
-    icon: <Award className="w-4 h-4" />,
+    company: "Nestlé Nigeria Plc",
+    role: "Electrical & Automation Intern",
+    period: "Apr 2025 - Oct 2025",
+    badge: "🏭 Automation",
+    heading: "Nestlé Nigeria",
+    description: "Assisted in electrical maintenance, automation troubleshooting, and production line optimization. Supported PLC diagnostics, sensor calibration, and industrial control systems monitoring while gaining hands-on experience with manufacturing safety procedures.",
+    icon: <Briefcase className="w-4 h-4" />,
     color: "#10b981", // Emerald green
   },
   {
     id: 2,
-    company: "Nestlé",
-    role: "Automation Experience",
-    period: "Industrial Practice",
-    badge: "🏭 Automation",
-    heading: "Industrial Practice",
-    description: "Worked on industrial automation systems, gaining practical experience in engineering operations, automation workflows, and modern industrial technologies.",
-    icon: <Briefcase className="w-4 h-4" />,
+    company: "NION Academy",
+    role: "Chief Operation Officer & AI/Robotics Lead Facilitator",
+    period: "COO & AI Lead",
+    badge: "🤖 Robotics & AI",
+    heading: "NION Academy",
+    description: "Led and managed cross-functional teams to oversee the operation of the organization and execute strategy. Trained students on Artificial intelligence and robotics fundamentals.",
+    icon: <Award className="w-4 h-4" />,
     color: "#3b82f6", // Blue
   },
   {
     id: 3,
-    company: "NION Academy",
-    role: "Co-Founder",
-    period: "EdTech Venture",
-    badge: "🎓 EdTech",
-    heading: "EdTech Venture",
-    description: "Helping create educational opportunities through innovative EdTech solutions designed to improve learning outcomes for students.",
+    company: "Data Science Nigeria (DSN)",
+    role: "Sub-Tutor",
+    period: "Feb 2024 - Mar 2024",
+    badge: "📊 ML Education",
+    heading: "DSN Sub-Tutor",
+    description: "Proffered direct assistance in the use of software tools, and materials needed for student success. Directed students in completing assignments and projects related to machine learning, and assisted the main tutor.",
     icon: <GraduationCap className="w-4 h-4" />,
     color: "#c084fc", // Purple
   },
@@ -119,11 +119,14 @@ export default function Experience() {
               />
               <div className="absolute bottom-6 left-6 z-20">
                 <span className="font-mono text-xs text-white/50 uppercase tracking-widest">
-                  Working Field Operations
+                  OOU B.Eng. Electrical & Electronics
                 </span>
                 <h4 className="font-sans text-lg font-bold text-white mt-1">
                   Oyindamola Deji-Agboola
                 </h4>
+                <p className="font-mono text-[10px] text-white/60 mt-1">
+                  CGPA: 4.52 / 5.00 (Ranked 5th in Dept) • Expected 2026
+                </p>
               </div>
             </div>
 

@@ -17,65 +17,116 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "ADDEK Smart Speaker",
+    category: "AI Hardware • Startup",
+    description:
+      "Engineering an AI-powered smart speaker featuring multilingual support specifically tailored for local African languages, bridging the gap between hardware prototyping and software integration.",
+    badge: "🎙 Startup MVP",
+    image: "/yinka_workspace.png",
+    icon: <Radio className="w-5 h-5" />,
+    stats: [
+      { label: "Status", value: "MVP in Dev" },
+      { label: "Focus", value: "African Lang" },
+    ],
+  },
+  {
+    title: "Dual-Axis Solar Tracker",
+    category: "IoT • Embedded ML",
+    description:
+      "Designing and developing a dual-axis solar tracking system featuring Machine Learning optimization and IoT monitoring and control. Utilizing MG996R servo motors to maximize energy capture.",
+    badge: "☀️ Final Year Project",
+    image: "/engr_yinka_2.jpeg",
+    icon: <Cpu className="w-5 h-5" />,
+    stats: [
+      { label: "Motors", value: "MG996R" },
+      { label: "Optimization", value: "ML-Driven" },
+    ],
+  },
+  {
+    title: "SabiSales AI Sales Agent",
+    category: "Agentic AI • Hackathon",
+    description:
+      "Secured 4th place in the Meta AI Developer Academy final hackathon by developing an intelligent, agentic AI sales solution.",
+    badge: "🏆 4th Place Meta AI",
+    image: "/mg_0440.jpeg",
+    icon: <Brain className="w-5 h-5" />,
+    stats: [
+      { label: "Hackathon", value: "Meta AI" },
+      { label: "Rank", value: "4th Place" },
+    ],
+  },
+  {
     title: "MoyoCare-Her",
     category: "AI • Wellness",
     description:
-      "An AI-powered wellness companion designed for female students. Featuring secure, real-time AI conversations, personalized mental wellness guidance and resources.",
+      "Won the 'Best Lovable Project' award at the Lovable Women in AI Nigeria Hackathon (2025). An AI-powered wellness companion designed for female students featuring secure, real-time conversations.",
     badge: "🏆 Best Lovable Project Award",
     image: "/moyocare.png",
     icon: <Brain className="w-5 h-5" />,
     stats: [
-      { label: "Accuracy", value: "98.2%" },
-      { label: "Users", value: "1.2k+" },
-      { label: "Latency", value: "<200ms" },
+      { label: "Hackathon", value: "Women in AI" },
+      { label: "Year", value: "2025" },
     ],
   },
   {
-    title: "IoT Solutions Network",
-    category: "IoT • Wireless",
+    title: "Smart Energy Monitoring System",
+    category: "IoT • Embedded Systems",
     description:
-      "Connected environmental sensing nodes deploying low-power mesh networks for real-time monitoring.",
-    image: "/yinka_workspace.png",
-    icon: <Radio className="w-5 h-5" />,
-    stats: [
-      { label: "Uptime", value: "99.99%" },
-      { label: "Latency", value: "12ms" },
-    ],
-  },
-  {
-    title: "Embedded Hardware Prototypes",
-    category: "Embedded Systems",
-    description:
-      "Custom firmware development and PCB design for smart hardware monitoring and telemetry systems.",
-    image: "/engr_yinka_2.jpeg",
+      "Developed an IoT-based energy monitoring solution to track and optimize power consumption using microcontroller architecture.",
+    image: "/engr_yinka_1.jpeg",
     icon: <Cpu className="w-5 h-5" />,
     stats: [
-      { label: "Power Draw", value: "1.2mW" },
-      { label: "Clock", value: "168MHz" },
+      { label: "MCU", value: "ESP32/Arduino" },
+      { label: "Target", value: "Power Opt" },
     ],
   },
   {
-    title: "Industrial Automation Systems",
-    category: "Automation",
+    title: "Predictive Model for Heart Disease",
+    category: "Machine Learning • Python",
     description:
-      "PLC programming and SCADA configuration for automated process flows in modern manufacturing.",
+      "Built ML models to detect early risk factors using Python and real-world datasets. Addressed imbalanced data and overfitting via cross-validation and feature engineering.",
+    badge: "📊 DSN Hackathon",
     image: "/mg_0434.jpeg",
     icon: <Settings className="w-5 h-5" />,
     stats: [
-      { label: "Throughput", value: "+30%" },
-      { label: "Failure", value: "<0.01%" },
+      { label: "Language", value: "Python" },
+      { label: "Validation", value: "Cross-Val" },
     ],
   },
   {
-    title: "Edge AI Applications",
-    category: "AI • Deep Learning",
+    title: "Machine Translation (English Yoruba)",
+    category: "NLP • Deep Learning",
     description:
-      "Deploying lightweight object detection models on low-power microcontrollers at the edge.",
-    image: "/mg_0440.jpeg",
+      "Developed an NLP model for accurate translation of African languages. Fine-tuned pre-trained models to improve language-specific accuracy.",
+    image: "/engr_ykk.jpeg",
     icon: <Brain className="w-5 h-5" />,
     stats: [
-      { label: "Model", value: "140KB" },
-      { label: "FPS", value: "45" },
+      { label: "Model", value: "Fine-tuned" },
+      { label: "Languages", value: "Eng ↔ Yor" },
+    ],
+  },
+  {
+    title: "Obstacle Avoidance Robot",
+    category: "Robotics • Control",
+    description:
+      "Developed a robot with an obstacle avoidance system using ultrasonic sensors and autonomous path planning.",
+    image: "/mg_0434.jpeg",
+    icon: <Cpu className="w-5 h-5" />,
+    stats: [
+      { label: "Platform", value: "Arduino" },
+      { label: "Sensors", value: "Ultrasonic" },
+    ],
+  },
+  {
+    title: "Fingerprint Attendance System",
+    category: "Embedded Systems • Security",
+    description:
+      "Developed an attendance system with a fingerprint sensor for secure biometric identification and access logging.",
+    image: "/mg_0440.jpeg",
+    icon: <Settings className="w-5 h-5" />,
+    stats: [
+      { label: "Sensor", value: "Biometric" },
+      { label: "Interface", value: "LCD Display" },
     ],
   },
 ];

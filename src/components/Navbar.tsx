@@ -41,7 +41,7 @@ export default function Navbar() {
             fontSize: isScrolled ? "1rem" : "1.25rem",
           }}
         >
-          Yinka.
+          Engr. Yinka.
         </motion.span>
       </Link>
 

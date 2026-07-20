@@ -53,7 +53,7 @@ export default function Hero() {
         >
           <div className="inline-block rounded-full border border-white/20 bg-white/5 px-3 py-1 backdrop-blur-md">
             <span className="font-mono text-xs font-medium tracking-widest text-white/80 uppercase">
-              Embedded Systems Engineer • AI Developer • IoT Specialist
+              Embedded Systems & IoT • Machine Learning • Meta AI Developer
             </span>
           </div>
 
@@ -63,9 +63,10 @@ export default function Hero() {
           </h1>
 
           <p className="max-w-xl text-lg text-white/60 font-medium leading-relaxed">
-            Award-winning Embedded Systems & IoT Engineer building intelligent
-            systems, advancing AI innovation, and empowering the next generation
-            of African women in technology.
+            Professional with multi-disciplinary expertise as an Embedded Systems and IoT Engineer,
+            Machine Learning Engineer, and a Certified Meta AI Academy Developer. Highly skilled in
+            Python, AI model deployment, and industrial automation. Passionate about applying robotics
+            and AI solutions to real-world, Afro-centered challenges.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full sm:w-auto">
