@@ -22,14 +22,14 @@ const stats: StatItem[] = [
   },
   {
     metric: "Tech Events Led",
-    value: 35,
+    value: 5,
     suffix: "+",
     label: "Hackathons, technical panels, workshops, and STEM bootcamps.",
     icon: <Calendar className="w-5 h-5" />,
   },
   {
     metric: "Projects Built",
-    value: 25,
+    value: 10,
     suffix: "+",
     label: "Embedded devices, IoT applications, and AI integrations.",
     icon: <Rocket className="w-5 h-5" />,
