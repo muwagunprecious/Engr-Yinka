@@ -34,15 +34,14 @@ export default function Navbar() {
       animate={{ y: 0, x: "-50%", opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <Link href="#home" className="flex items-center gap-2 relative z-10">
-        <motion.span
-          className="font-mono font-bold text-white uppercase tracking-wider"
-          animate={{
-            fontSize: isScrolled ? "1rem" : "1.25rem",
-          }}
-        >
-          Engr. Yinka.
-        </motion.span>
+      <Link href="#home" className="flex items-center gap-3 relative z-10 group">
+        <div className="relative flex items-center justify-center">
+          <img
+            src="/logo.png"
+            alt="Engr. Yinka Logo"
+            className="h-8 md:h-10 w-auto filter invert brightness-200 contrast-200 mix-blend-screen object-contain transition-transform group-hover:scale-105"
+          />
+        </div>
       </Link>
 
       <nav className="hidden md:flex items-center gap-6 relative z-10">

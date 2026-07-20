@@ -51,6 +51,14 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex flex-col items-start gap-6"
         >
+          <div className="flex items-center gap-3 mb-1">
+            <img
+              src="/logo.png"
+              alt="Oyindamola Deji-Agboola Emblem"
+              className="h-10 md:h-12 w-auto filter invert brightness-200 contrast-200 mix-blend-screen object-contain"
+            />
+          </div>
+
           <div className="inline-block rounded-full border border-white/20 bg-white/5 px-3 py-1 backdrop-blur-md">
             <span className="font-mono text-xs font-medium tracking-widest text-white/80 uppercase">
               Embedded Systems & IoT • Machine Learning • Meta AI Developer

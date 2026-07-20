@@ -170,9 +170,16 @@ export default function Contact() {
 
         {/* Footer/Social Links */}
         <div className="flex flex-col md:flex-row items-center justify-between mt-24 pt-8 border-t border-white/5 gap-6">
-          <span className="font-mono text-xs text-white/30">
-            © {new Date().getFullYear()} Oyindamola Deji-Agboola. All rights reserved.
-          </span>
+          <div className="flex items-center gap-3">
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="h-6 w-auto filter invert brightness-200 contrast-200 mix-blend-screen opacity-70"
+            />
+            <span className="font-mono text-xs text-white/30">
+              © {new Date().getFullYear()} Oyindamola Deji-Agboola. All rights reserved.
+            </span>
+          </div>
           
           <div className="flex items-center gap-6">
             <a
