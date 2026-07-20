@@ -33,7 +33,7 @@ const experiences: ExperienceItem[] = [
     id: 2,
     company: "NION Academy",
     role: "Chief Operation Officer & AI/Robotics Lead Facilitator",
-    period: "COO & AI Lead",
+    period: "2024 - Present",
     badge: "🤖 Robotics & AI",
     heading: "NION Academy",
     description: "Led and managed cross-functional teams to oversee the operation of the organization and execute strategy. Trained students on Artificial intelligence and robotics fundamentals.",
