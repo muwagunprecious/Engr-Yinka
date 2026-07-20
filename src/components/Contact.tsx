@@ -174,7 +174,7 @@ export default function Contact() {
             <img
               src="/logo.png"
               alt="Logo"
-              className="h-6 w-auto filter invert brightness-200 contrast-200 mix-blend-screen opacity-70"
+              className="h-10 md:h-12 w-auto filter invert brightness-200 contrast-200 mix-blend-screen opacity-90"
             />
             <span className="font-mono text-xs text-white/30">
               © {new Date().getFullYear()} Oyindamola Deji-Agboola. All rights reserved.

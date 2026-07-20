@@ -55,7 +55,7 @@ export default function Hero() {
             <img
               src="/logo.png"
               alt="Oyindamola Deji-Agboola Emblem"
-              className="h-10 md:h-12 w-auto filter invert brightness-200 contrast-200 mix-blend-screen object-contain"
+              className="h-20 md:h-28 w-auto filter invert brightness-200 contrast-200 mix-blend-screen object-contain"
             />
           </div>
 

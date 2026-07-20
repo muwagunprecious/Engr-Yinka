@@ -39,7 +39,7 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="Engr. Yinka Logo"
-            className="h-8 md:h-10 w-auto filter invert brightness-200 contrast-200 mix-blend-screen object-contain transition-transform group-hover:scale-105"
+            className="h-12 md:h-16 w-auto filter invert brightness-200 contrast-200 mix-blend-screen object-contain transition-transform group-hover:scale-105"
           />
         </div>
       </Link>
